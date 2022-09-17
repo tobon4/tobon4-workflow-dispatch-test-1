@@ -1,0 +1,11 @@
+name: 'DORA Metrics Stop - Production'
+
+on: [repository_dispatch]
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: print 
+        run: echo success

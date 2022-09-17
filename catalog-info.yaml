@@ -4,5 +4,5 @@ metadata:
   name: "tobon4-workflow-dispatch-test-1"
 spec:
   type: service
-  owner: user:guest
+  owner: tobon4
   lifecycle: experimental
