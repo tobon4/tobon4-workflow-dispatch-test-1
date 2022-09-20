@@ -1,0 +1,96 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
+kind: Template
+metadata:
+  name: IncorporatedCreateAkamaiAccount
+  title: Create New Akamai Upload Account
+  description: Create New Akamai Upload Account
+spec:
+  owner: tobon4
+  type: service
+
+  # These parameters are used to generate the input form in the frontend, and are
+  # used to gather input data for the execution of the template.
+  parameters:
+    
+    - title: Choose a location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+    
+    
+    # - title: Name of upload account today
+    #   required:
+    #     - name
+    #   properties:
+    #     name:
+    #       title: Name
+    #       type: string
+    #       description: The name of the Akamai upload account that will be created
+    #       #ui:autofocus: true
+    #       #ui:options:
+    #        # rows: 1
+    
+    
+    
+    # - title: Is Production Account? 
+    #   required:
+    #     - answer
+    #   properties:
+    #     answer:
+    #       title: Answer
+    #       type: string
+    #       description: Type "yes" if this is an Akamai production upload account - "no" if non-production account
+    #       #ui:autofocus: true
+    #       #ui:options:
+    #        # rows: 1
+    # - title: Subdirectory restriction 1
+    #   required:
+    #     - path1
+    #   properties:
+    #     path1:
+    #       title: Path
+    #       type: string
+    #       description: The first subdirectory restriction; for example, "/homesmart" or "/sofas"
+    #       #ui:autofocus: true
+    #       #ui:options:
+    #        # rows: 1
+    # - title: Subdirectory restriction 2
+    #   optional:
+    #     - path2
+    #   properties:
+    #     path2:
+    #       title: Path
+    #       type: string
+    #       description: The second subdirectory restriction; for example, "/homesmart" or "/sofas" - if applicable
+          
+
+  # These steps are executed in the scaffolder backend, using data that we gathered
+  # via the parameters above.
+  steps:
+    # Each step executes an action, in this case one templates files into the working directory.
+    
+  - action: github:actions:dispatch
+    id: trigger-build
+    name: Trigger Build
+    input:
+      repoUrl: ${{ parameters.repoUrl }}
+      workflowId: 'dispatch.yml'
+      branchOrTagName: 'master'
+
+
+  # Outputs are displayed to the user after a successful execution of the template.
+  # output:
+  #   links:
+  #     - title: Repository
+  #       url: ${{ steps.publish.output.remoteUrl }}
+  #     - title: Open in catalog
+  #       icon: catalog
+  #       entityRef: ${{ steps.register.output.entityRef }}
